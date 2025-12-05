@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局域网文件快传</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo-area">
+                <img src="assets/logo.png" class="app-logo" alt="Logo">
+            </div>
+            <nav>
+                <button class="nav-btn active" data-tab="send">
+                    <i class="ri-send-plane-fill icon"></i> 发送
+                </button>
+                <button class="nav-btn" data-tab="receive">
+                    <i class="ri-download-cloud-2-line icon"></i> 接收
+                </button>
+                <button class="nav-btn" data-tab="history">
+                    <i class="ri-history-line icon"></i> 历史
+                </button>
+                <button class="nav-btn" data-tab="settings">
+                    <i class="ri-settings-3-line icon"></i> 设置
+                </button>
+            </nav>
+            <div class="connection-status">
+                <div class="status-indicator"></div>
+                <span id="connection-text">等待连接...</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Send Tab -->
+            <div id="send-tab" class="tab-content active">
+                <div class="tab-header">
+                    <div class="sub-tabs">
+                        <button class="sub-tab-btn active" data-subtab="file">发送文件</button>
+                        <button class="sub-tab-btn" data-subtab="text">发送文字</button>
+                    </div>
+                </div>
+
+                <!-- Send File Section -->
+                <div id="send-file-view" class="view-section active">
+                    <div class="view-header">
+                        <div class="view-title">文件传输</div>
+                        <button id="share-file-btn" class="primary-btn pill-btn" disabled>
+                            <i class="ri-send-plane-fill"></i> 发送文件
+                        </button>
+                    </div>
+                    
+                    <div class="responsive-grid">
+                        <div id="drop-zone" class="drop-zone">
+                            <i class="ri-upload-cloud-2-line upload-icon"></i>
+                            <h3>拖拽文件到这里</h3>
+                            <p>或者点击选择文件</p>
+                            <input type="file" id="file-input" hidden multiple>
+                        </div>
+                        
+                        <!-- Pending Files List -->
+                        <div id="pending-files-area" class="pending-area" style="display: none;">
+                            <div class="area-header">
+                                <span>待发送文件 (<span id="pending-count">0</span>)</span>
+                                <button id="clear-pending-btn" class="text-btn">清空</button>
+                            </div>
+                            <div id="pending-list" class="file-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Send Text Section -->
+                <div id="send-text-view" class="view-section">
+                    <div class="view-header">
+                        <div class="view-title">文字消息</div>
+                        <button id="share-text-btn" class="primary-btn pill-btn">
+                            <i class="ri-message-2-line"></i> 发送文字
+                        </button>
+                    </div>
+                    
+                    <div class="responsive-grid">
+                        <div class="input-wrapper">
+                            <textarea id="text-input" placeholder="在此输入要发送的文字..."></textarea>
+                        </div>
+                        
+                        <div class="text-history-area">
+                            <div class="area-header">
+                                <span>最近发送</span>
+                            </div>
+                            <div id="text-history-list" class="file-list">
+                                <!-- Text history items -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receive Tab -->
+            <div id="receive-tab" class="tab-content">
+                <div class="view-header">
+                    <h2>接收到的文件</h2>
+                    <button id="open-received-folder-btn" class="secondary-btn pill-btn">
+                        <i class="ri-folder-open-line"></i> 打开文件夹
+                    </button>
+                </div>
+                <div id="received-list" class="file-list full-height-list">
+                    <div class="empty-state">
+                        <i class="ri-inbox-archive-line empty-icon"></i>
+                        <p>暂无接收到的文件</p>
+                        <p class="sub-text">手机端发送的文件将显示在这里</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div id="history-tab" class="tab-content">
+                <div class="view-header">
+                    <h2>传输历史</h2>
+                    <button id="clear-history-btn" class="text-btn">清空历史</button>
+                </div>
+                <div id="history-list" class="file-list full-height-list">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <h2>连接设置</h2>
+                <div class="settings-card">
+                    <div class="qr-container-large">
+                        <img id="qr-image" src="" alt="QR Code">
+                    </div>
+                    <div class="connection-info">
+                        <p class="hint">请使用手机浏览器扫描二维码连接</p>
+                        <p class="url-text" id="url-text"></p>
+                        <p class="sub-text">确保手机和电脑在同一局域网 (WiFi) 下</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
